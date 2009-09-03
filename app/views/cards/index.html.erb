@@ -1,0 +1,9 @@
+<%= pluralize @cards.length, "Card" %><br/>
+
+<%- @cards.each do |card| -%>
+<div id="card_<%= card.id %>">
+<%= card.title %><br/>
+<%= card.description %><br/>
+<%= card.points %><br/>
+</div>
+<%- end -%>
