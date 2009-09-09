@@ -9,12 +9,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090906140410) do
+ActiveRecord::Schema.define(:version => 20090909005217) do
 
   create_table "cards", :force => true do |t|
     t.string   "title"
     t.string   "description"
     t.integer  "points"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "iterations", :force => true do |t|
+    t.date     "start_date"
+    t.integer  "number_of_days"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,0 +1,7 @@
+<%- @iterations.each_with_index do |iteration, index| -%>
+<div id="iteration_<%= iteration.id %>">
+<p>Iteration <%= index + 1 %></p>
+<p><%= iteration.start_date.strftime("%m/%d/%Y") %></p>  
+<p><%= iteration.number_of_days %></p>
+</div>
+<%- end -%>

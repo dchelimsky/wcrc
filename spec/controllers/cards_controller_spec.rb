@@ -1,11 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-Spec::Matchers.define :be_a_new do |model_class|
-  match do |record|
-    model_class === record && record.new_record?
-  end
-end
-
 describe CardsController do
   describe "GET 'index'" do
     it "assigns all cards" do
