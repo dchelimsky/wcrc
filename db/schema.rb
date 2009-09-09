@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090909005217) do
+ActiveRecord::Schema.define(:version => 20090909034936) do
 
   create_table "cards", :force => true do |t|
     t.string   "title"
@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20090909005217) do
     t.integer  "points"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "iteration_id"
   end
 
   create_table "iterations", :force => true do |t|
