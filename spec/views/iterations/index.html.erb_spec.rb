@@ -3,7 +3,7 @@ require 'spec/spec_helper'
 Spec::Matchers.define :display do |iteration|
   match do |response|
     response.body.include?("Iteration #{@number}") &&
-    response.body.include?(iteration.start_date.strftime("%m/%d/%Y")) &&
+    response.body.include?(iteration.start_date.to_s :iteration_start_date) &&
     response.body.include?(iteration.number_of_days.to_s)
   end
   
