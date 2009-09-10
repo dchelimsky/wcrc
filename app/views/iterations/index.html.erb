@@ -1,7 +1,18 @@
+<style type="text/css" media="screen">
+  .iteration .card_list {
+    list-style-type: decimal;
+  }
+</style>
+
 <%- @iterations.each_with_index do |iteration, index| -%>
-<div id="iteration_<%= iteration.id %>">
-<p>Iteration <%= index + 1 %></p>
-<p><%= iteration.start_date.to_s(:iteration_start_date) %></p>  
-<p><%= iteration.number_of_days %></p>
-</div>
+<div id="iteration_<%= iteration.id %>" class='iteration'>
+Iteration <%= index + 1 %>:
+<%= iteration.start_date.to_s(:iteration_start_date) %> to <%= (iteration.start_date + (iteration.number_of_days - 1).days).to_s(:iteration_start_date)  %>
+<ul class='card_list'>
+  <%- iteration.cards.each do |card| -%>
+  <li><%= card.title %></li>
+  <%- end -%>
+</ul>
+
+</div>  
 <%- end -%>

@@ -13,6 +13,9 @@ module NavigationHelpers
     
     when /the backlog/
       backlog_path
+      
+    when /the iterations page/
+      iterations_path
     # Add more mappings here.
     # Here is a more fancy example:
     #

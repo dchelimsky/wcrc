@@ -34,22 +34,37 @@ describe "iterations/index.html.erb" do
   end
   
   context "with two iterations" do
-    it "displays the iterations" do
+    before(:each) do
       assigns[:iterations] = [
-        iteration_1 = stub_model(Iteration,
+        @iteration_1 = stub_model(Iteration,
           :id => 37,
           :start_date => "10/15/2012",
           :number_of_days => 7
         ),
-        iteration_2 = stub_model(Iteration,
+        @iteration_2 = stub_model(Iteration,
           :id => 42,
           :start_date => "10/22/2012",
           :number_of_days => 7
         )
       ]
-      render
-      response.should display(iteration_1).number('1')
-      response.should display(iteration_2).number('2')
     end
+    
+    it "displays the iterations" do
+      render
+      response.should display(@iteration_1).number('1')
+      response.should display(@iteration_2).number('2')
+    end
+    
+        
+    context "with one card" do
+      it "displays the card beneath its iteration" do
+        @iteration_1.stub(:cards).and_return([card = stub_model(Card, :title => "Example")])
+        render
+        response.should have_selector("div", :id => "iteration_#{@iteration_1.id}") do |scope|
+          scope.should contain("Example")
+        end
+      end
+    end
+
   end
 end
