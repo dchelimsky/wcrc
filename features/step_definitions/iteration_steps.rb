@@ -2,8 +2,8 @@ Given /^no iterations$/ do
   Iteration.destroy_all
 end
 
-Given /^a (\d*) day iteration beginning "([^\"]*)"$/ do |number_of_days, start_date|
-  Iteration.create!(:start_date => start_date, :number_of_days => number_of_days)
+Given /^an iteration starting "([^\"]*)"$/ do |start_date|
+  Iteration.create!(:start_date => start_date, :number_of_days => 7)
 end
 
 When /^I add an iteration with$/ do |table|
@@ -27,6 +27,13 @@ Then /^I should see the "([^\"]*)" card in the iteration starting "([^\"]*)"$/ d
   iteration = Iteration.find_by_start_date(start_date.as_date)
   within("#iteration_#{iteration.id}") do |scope|
     scope.should contain(card_title)
+  end
+end
+
+Then /^I should not see the "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |card_title, start_date|
+  iteration = Iteration.find_by_start_date(start_date.as_date)
+  within("#iteration_#{iteration.id}") do |scope|
+    scope.should_not contain(card_title)
   end
 end
 

@@ -40,7 +40,7 @@ When /^I add a "([^\"]*)" card$/ do |title|
   click_button 'Create'
 end
 
-When /^I assign the "([^\"]*)" card to the iteration starting "([^\"]*)"$/ do |card_title, start_date|
+When /^I move the "([^\"]*)" card to the iteration starting "([^\"]*)"$/ do |card_title, start_date|
   iteration = Iteration.find_by_start_date(start_date.as_date)
   card = Card.find_by_title(card_title)
   within("#card_#{card.id}") do |scope|
