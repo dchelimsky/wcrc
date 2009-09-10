@@ -16,7 +16,7 @@ end
 
 Then /^I should see "([^\"]*)" starting on "([^\"]*)"$/ do
     |iteration_title, start_date|
-  iteration = Iteration.find_by_start_date(Date.parse(start_date))
+  iteration = Iteration.find_by_start_date(start_date.as_date)
   response.should have_selector("div#iteration_#{iteration.id}") do |div|
     div.should contain(iteration_title)
     div.should contain(start_date)
@@ -24,7 +24,7 @@ Then /^I should see "([^\"]*)" starting on "([^\"]*)"$/ do
 end
 
 Then /^I should see the "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |card_title, start_date|
-  iteration = Iteration.find_by_start_date(Date.parse(start_date))
+  iteration = Iteration.find_by_start_date(start_date.as_date)
   within("#iteration_#{iteration.id}") do |scope|
     scope.should contain(card_title)
   end

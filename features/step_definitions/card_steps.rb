@@ -2,28 +2,25 @@ Given /^no cards$/ do
   Card.destroy_all
 end
 
-Given /^a "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |card_title, iteration_start_date|
-  Card.create!(
-    :title => card_title,
-    :iteration => Iteration.find_or_create_by_start_date_and_number_of_days(Date.parse(iteration_start_date), 7)
-  )
-end
 
-Given /^a "([^\"]*)" card$/ do |title|
-  Card.create!(
-    :title => title,
-    :description => "description for #{title}",
-    :points => title.length
-  )
-end
-
-Given /^a "([^\"]*)" card in iteration starting "([^\"]*)"$/ do |title, iteration_start_date|
+def create_card(title, iteration = nil)
   Card.create!(
     :title => title,
     :description => "description for #{title}",
     :points => title.length,
-    :iteration => Iteration.find_by_start_date(Date.parse(iteration_start_date))
+    :iteration => iteration
   )
+end
+
+Given /^a "([^\"]*)" card$/ do |title|
+  create_card title
+end
+
+Given /^a "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |title, start_date|
+  create_card title, 
+      Iteration.find_or_create_by_start_date_and_number_of_days(
+                                          start_date.as_date, 
+                                          7)
 end
 
 When /^I add a card with$/ do |table|
@@ -43,11 +40,11 @@ When /^I add a "([^\"]*)" card$/ do |title|
   click_button 'Create'
 end
 
-When /^I assign the "([^\"]*)" card to the iteration starting "([^\"]*)"$/ do |card_title, iteration_start_date|
-  iteration = Iteration.find_by_start_date(Date.parse(iteration_start_date))
+When /^I assign the "([^\"]*)" card to the iteration starting "([^\"]*)"$/ do |card_title, start_date|
+  iteration = Iteration.find_by_start_date(start_date.as_date)
   card = Card.find_by_title(card_title)
   within("#card_#{card.id}") do |scope|
-    scope.select "Iteration: #{iteration_start_date}", :from => "card[iteration_id]"
+    scope.select "Iteration: #{start_date}", :from => "card[iteration_id]"
     scope.click_button "Move to:"
   end
 end

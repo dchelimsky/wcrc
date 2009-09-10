@@ -10,7 +10,7 @@ Feature: view backlog
 
   Scenario: two cards, one assigned, one unassigned
     Given a 7 day iteration beginning "9/1/2009"
-    And a "manage cards" card in iteration starting "9/1/2009"
+    And a "manage cards" card in the iteration starting "9/1/2009"
     And a "manage iterations" card
     When I go to the backlog
     Then I should see the "manage iterations" card

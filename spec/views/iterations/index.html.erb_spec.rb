@@ -1,23 +1,5 @@
 require 'spec/spec_helper'
 
-Spec::Matchers.define :display do |iteration|
-  match do |response|
-    response.body.include?("Iteration #{@number}") &&
-    response.body.include?(iteration.start_date.to_s :iteration_start_date) &&
-    response.body.include?(iteration.number_of_days.to_s)
-  end
-  
-  failure_message_for_should do |response|
-    "expected the html\n#{response.body} to display the iteration #{iteration.inspect}"
-  end
-
-  def number(number)
-    @number= number
-    self
-  end
-end
-
-
 describe "iterations/index.html.erb" do
   context "with one iteration" do
     it "displays the iteration" do
@@ -29,7 +11,7 @@ describe "iterations/index.html.erb" do
         )
       ]
       render
-      response.should display(iteration).number('1')
+      response.should display_iteration(iteration).number('1')
     end
   end
   
@@ -51,8 +33,8 @@ describe "iterations/index.html.erb" do
     
     it "displays the iterations" do
       render
-      response.should display(@iteration_1).number('1')
-      response.should display(@iteration_2).number('2')
+      response.should display_iteration(@iteration_1).number('1')
+      response.should display_iteration(@iteration_2).number('2')
     end
     
         
