@@ -36,4 +36,3 @@ Then /^I should not see the "([^\"]*)" card in the iteration starting "([^\"]*)"
     scope.should_not contain(card_title)
   end
 end
-

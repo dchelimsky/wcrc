@@ -16,6 +16,12 @@ Given /^a "([^\"]*)" card$/ do |title|
   create_card title
 end
 
+Given /^a card with$/ do |table|
+  card_data = table.hashes.first.dup
+  card_data[:iteration] = Iteration.find_by_start_date(card_data[:iteration].as_date)
+  Card.create!(card_data)
+end
+
 Given /^a "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |title, start_date|
   create_card title, 
       Iteration.find_or_create_by_start_date_and_number_of_days(
@@ -61,5 +67,12 @@ Then /^I should see the "([^"]*)" card$/ do |card_title|
     card_div.should contain(card.description)
     card_div.should contain(card.points.to_s)
   end
+end
+
+Then /^I should see detailed information for the "([^\"]*)" card$/ do |card_title|
+  card = Card.find_by_title(card_title)
+  response.should contain(card.title)
+  response.should contain(card.description)
+  response.should contain(card.points.to_s)
 end
 

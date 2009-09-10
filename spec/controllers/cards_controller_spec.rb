@@ -7,7 +7,15 @@ describe CardsController do
       assigns[:card].should be_a_new(Card)
     end
   end
-
+  
+  describe "GET 'show'" do
+    it "assigns the sought after card to @card" do
+      Card.stub(:find).with("37").and_return(card = stub_model(Card))
+      get 'show', :id => 37
+      assigns[:card].should be(card)
+    end
+  end
+  
   describe "POST 'create'" do
     it "creates a card with passed in params" do
       Card.should_receive(:create!).with({'these' => 'params'})

@@ -8,7 +8,6 @@ Feature: view iterations
     When I go to the iterations page
     Then I should see the "manage cards" card in the iteration starting "9/12/2009"
 
-@focus
   Scenario: move card to another iteration
     Given an iteration starting "9/12/2009"
     And an iteration starting "9/19/2009"
@@ -17,3 +16,14 @@ Feature: view iterations
     When I move the "manage cards" card to the iteration starting "09/19/2009"
     Then I should not see the "manage cards" card in the iteration starting "09/12/2009"
     And I should see the "manage cards" card in the iteration starting "09/19/2009"
+
+@focus
+  Scenario: navigate to card
+    Given an iteration starting "9/12/2009"
+    And a card with
+      | title        | description         | points | iteration |
+      | manage cards | crud ops with cards | 2      | 9/12/2009 |
+    And I am on the iterations page
+    When I follow "manage cards"
+    Then I should see detailed information for the "manage cards" card
+  

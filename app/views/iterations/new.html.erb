@@ -1,5 +1,7 @@
 <%- form_for(@iteration) do |f| -%>
-<%= f.text_field :start_date %><br/>
-<%= f.text_field :number_of_days %><br/>
+<%= f.label :start_date, "Start Date" %> <%= f.text_field :start_date %><br/>
+<%= f.label :number_of_days, "Number of Days" %> <%= f.text_field :number_of_days %><br/>
 <%= f.submit 'Create' %><br/>
 <%- end -%>
+
+<%= link_to 'All Iterations', iterations_path %>

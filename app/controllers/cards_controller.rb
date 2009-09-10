@@ -13,4 +13,8 @@ class CardsController < ApplicationController
     card.update_attributes!(params[:card])
     redirect_to :back
   end
+  
+  def show
+    @card = Card.find(params[:id])
+  end
 end

@@ -46,6 +46,14 @@ describe "iterations/index.html.erb" do
           scope.should contain("Example")
         end
       end
+      
+      it "displays a link to the card" do
+        @iteration_1.stub(:cards).and_return([card = stub_model(Card, :title => "Example")])
+        render
+        response.should have_selector("a", :href => card_path(card.id)) do |link|
+          link.should contain("Example")
+        end
+      end
     end
 
   end
