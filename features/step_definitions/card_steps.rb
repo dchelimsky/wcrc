@@ -45,6 +45,15 @@ When /^I add a "([^\"]*)" card$/ do |title|
   click_button 'Create'
 end
 
+When /^I assign the "([^\"]*)" card to the iteration starting "([^\"]*)"$/ do |card_title, iteration_start_date|
+  iteration = Iteration.find_by_start_date(Date.parse(iteration_start_date))
+  card = Card.find_by_title(card_title)
+  within("#card_#{card.id}") do |scope|
+    scope.select "Iteration: #{iteration_start_date}", :from => "card[iteration_id]"
+    scope.click_button "Move to:"
+  end
+end
+
 Then /^I should not see the "([^\"]*)" card$/ do |card_title|
   card = Card.find_by_title(card_title)
   response.should_not have_selector("div", :id => "card_#{card.id}")

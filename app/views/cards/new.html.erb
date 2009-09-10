@@ -1,6 +1,9 @@
 <%- form_for(@card) do |f| -%>
+<%= f.label :title %><br/>
 <%= f.text_field :title %><br/>
+<%= f.label :description %><br/>
 <%= f.text_field :description %><br/>
+<%= f.label :points %><br/>
 <%= f.text_field :points %><br/>
 <%= f.submit 'Create' %><br/>
 <%- end -%>
