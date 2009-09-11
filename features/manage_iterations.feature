@@ -40,7 +40,6 @@ Feature: view iterations
     Then I should see the "manage cards" card in the iteration starting "09/01/2009"
     And I should not see the "manage cards" card in the backlog
 
-@focus
   Scenario: moving a card to the backlog
     Given a "manage cards" card in the iteration starting "9/12/2009"
     When I go to the iterations page

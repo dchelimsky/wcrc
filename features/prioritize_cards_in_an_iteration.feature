@@ -3,6 +3,7 @@ Feature: prioritize cards in an iteration
   As a team leader
   I want to prioritize cards within an iteration
 
+@focus
   Scenario: default priority (new cards go to the back)
     Given a "first" card in the iteration starting "9/12/2009"
     And a "second" card in the backlog
