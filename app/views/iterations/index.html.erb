@@ -21,22 +21,23 @@
   }
 </style>
 
-<div id="backlog">
-<h2>Backlog</h2>
-  <%= render "iterations/cards", :cards => @backlog, :destination_options => destination_options_for_cards_in(:backlog) %>
-<br/>
-<%= link_to 'New Iteration', new_iteration_path %><br/>
-<%= link_to 'New Card', new_card_path %>
-</div>
+<%- with_iterations do |iterations| -%>
+  <div id="backlog">
+  <h2>Backlog</h2>
+    <%= render "iterations/cards", :cards => @backlog, :destination_options => iterations.destination_options_for_cards_in(:backlog) %>
+  <br/>
+  <%= link_to 'New Iteration', new_iteration_path %><br/>
+  <%= link_to 'New Card', new_card_path %>
+  </div>
 
-<div id="iterations">
-<%- @iterations.each_with_index do |iteration, index| -%>
-<div id="iteration_<%= iteration.id %>" class='iteration'>
-<h2>Iteration <%= index + 1 %>:
-<%= iteration.start_date.to_s(:iteration_start_date) %> to <%= (iteration.start_date + (iteration.number_of_days - 1).days).to_s(:iteration_start_date)  %></h2>
-<%= render "iterations/cards", :cards => iteration.cards, :destination_options => destination_options_for_cards_in(iteration) %>
+  <div id="iterations">
+  <%- iterations.each_with_index do |iteration, index| -%>
+  <div id="iteration_<%= iteration.id %>" class='iteration'>
+  <h2>Iteration <%= index + 1 %>:
+  <%= iteration.start_date.to_s(:iteration_start_date) %> to <%= (iteration.start_date + (iteration.number_of_days - 1).days).to_s(:iteration_start_date)  %></h2>
+  <%= render "iterations/cards", :cards => iteration.cards, :destination_options => iterations.destination_options_for_cards_in(iteration) %>
 
-</div>  
+  </div>  
+  <%- end -%>
+  </div>
 <%- end -%>
-</div>
-

@@ -2,12 +2,11 @@ require 'spec/spec_helper'
 
 describe "iterations/index.html.erb" do
   before(:each) do
-    assigns[:iterations] = []
     assigns[:backlog] = []
   end
   context "with one iteration" do
     it "displays the iteration" do
-      assigns[:iterations] = [
+      Iteration.stub(:all).and_return [
         iteration = stub_model(Iteration,
           :id => 37,
           :start_date => "10/15/2012",
@@ -31,7 +30,7 @@ describe "iterations/index.html.erb" do
   
   context "with two iterations" do
     before(:each) do
-      assigns[:iterations] = [
+      Iteration.stub(:all).and_return [
         @iteration_1 = stub_model(Iteration,
           :id => 37,
           :start_date => "10/15/2012",

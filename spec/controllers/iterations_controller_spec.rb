@@ -3,15 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe IterationsController do
   describe "GET index" do
     before(:each) do
-      Iteration.stub(:all).and_return []
       Card.stub(:backlog).and_return []
     end
-    it "assigns all iterations to @iterations" do
-      iterations = mock("iterations")
-      Iteration.stub(:all).and_return iterations
-      get :index
-      assigns[:iterations].should be(iterations)
-    end
+
     it "assigns the backlog to @backlog" do
       backlog = mock("backlog")
       Card.stub(:backlog).and_return backlog
