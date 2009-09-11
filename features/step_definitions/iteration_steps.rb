@@ -22,17 +22,3 @@ Then /^I should see "([^\"]*)" starting on "([^\"]*)"$/ do
     div.should contain(start_date)
   end
 end
-
-Then /^I should see the "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |card_title, start_date|
-  iteration = Iteration.find_by_start_date(start_date.as_date)
-  within("#iteration_#{iteration.id}") do |scope|
-    scope.should contain(card_title)
-  end
-end
-
-Then /^I should not see the "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |card_title, start_date|
-  iteration = Iteration.find_by_start_date(start_date.as_date)
-  within("#iteration_#{iteration.id}") do |scope|
-    scope.should_not contain(card_title)
-  end
-end

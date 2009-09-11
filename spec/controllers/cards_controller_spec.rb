@@ -24,7 +24,7 @@ describe CardsController do
 
     it "redirects to the backlog" do
       post 'create', :card => {}
-      response.should redirect_to(backlog_path)
+      response.should redirect_to(iterations_path)
     end
   end
   

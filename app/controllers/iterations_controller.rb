@@ -1,6 +1,7 @@
 class IterationsController < ApplicationController
   def index
     @iterations = Iteration.all
+    @backlog = Card.backlog
   end
   
   def new

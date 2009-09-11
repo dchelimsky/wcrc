@@ -1,6 +1,10 @@
 require 'spec/spec_helper'
 
 describe "iterations/index.html.erb" do
+  before(:each) do
+    assigns[:iterations] = []
+    assigns[:backlog] = []
+  end
   context "with one iteration" do
     it "displays the iteration" do
       assigns[:iterations] = [
@@ -12,6 +16,16 @@ describe "iterations/index.html.erb" do
       ]
       render
       response.should display_iteration(iteration).number('1')
+    end
+  
+    context "with one card in backlog" do
+      it "displays the card in the backlog" do
+        assigns[:backlog] = [card = stub_model(Card, :title => "Example")]
+        render
+        response.should have_selector("div", :id => "backlog") do |scope|
+          scope.should contain("Example")
+        end
+      end
     end
   end
   

@@ -2,7 +2,6 @@ Given /^no cards$/ do
   Card.destroy_all
 end
 
-
 def create_card(title, iteration = nil)
   Card.create!(
     :title => title,
@@ -55,20 +54,6 @@ When /^I move the "([^\"]*)" card to the iteration starting "([^\"]*)"$/ do |car
   end
 end
 
-Then /^I should not see the "([^\"]*)" card$/ do |card_title|
-  card = Card.find_by_title(card_title)
-  response.should_not have_selector("div", :id => "card_#{card.id}")
-end
-
-Then /^I should see the "([^"]*)" card$/ do |card_title|
-  card = Card.find_by_title(card_title)
-  response.should have_selector("div", :id => "card_#{card.id}") do |card_div|
-    card_div.should contain(card.title)
-    card_div.should contain(card.description)
-    card_div.should contain(card.points.to_s)
-  end
-end
-
 Then /^I should see detailed information for the "([^\"]*)" card$/ do |card_title|
   card = Card.find_by_title(card_title)
   response.should contain(card.title)
@@ -76,3 +61,36 @@ Then /^I should see detailed information for the "([^\"]*)" card$/ do |card_titl
   response.should contain(card.points.to_s)
 end
 
+Then /^I should see the "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |card_title, start_date|
+  iteration = Iteration.find_by_start_date(start_date.as_date)
+  within("#iteration_#{iteration.id}") do |scope|
+    scope.should contain(card_title)
+  end
+end
+
+Then /^I should not see the "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |card_title, start_date|
+  iteration = Iteration.find_by_start_date(start_date.as_date)
+  within("#iteration_#{iteration.id}") do |scope|
+    scope.should_not contain(card_title)
+  end
+end
+
+Then /^I should see the "([^\"]*)" card in the backlog$/ do |card_title|
+  card = Card.find_by_title(card_title)
+  within("#backlog") do |backlog|
+    within("#card_#{card.id}") do |card_div|
+      card_div.should contain(card.title)
+    end
+  end
+end
+
+Then /^I should not see the "([^\"]*)" card in the backlog$/ do |card_title|
+  card = Card.find_by_title(card_title)
+  response.should_not have_xpath("//div[@id = 'backlog']//div[@id = 'card_#{card.id}']")
+end
+
+Then /^I should not see any cards in the backlog$/ do
+  within("#backlog") do |scope|
+    scope.should_not have_xpath(".//div[starts-with(@id, 'card_')]")
+  end
+end

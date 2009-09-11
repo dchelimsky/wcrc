@@ -5,7 +5,7 @@ class CardsController < ApplicationController
   
   def create
     Card.create!(params[:card])
-    redirect_to(backlog_path)
+    redirect_to(iterations_path)
   end
   
   def update
