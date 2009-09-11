@@ -20,10 +20,15 @@ describe IterationsHelper do
         helper.destination_options_for_cards_in(stub_model(Iteration)).should include(["Backlog", 0])
       end
       
-      context "passing in nil" do
+      context "passing in :backlog" do
         it "excludes backlog" do
-          Iteration.stub(:all_but).and_return([])
+          Iteration.stub(:all).and_return([])
           helper.destination_options_for_cards_in(:backlog).should_not include(["Backlog", 0])
+        end
+        
+        it "passes nil to Iteration.all" do
+          Iteration.should_receive(:all).and_return []
+          helper.destination_options_for_cards_in(:backlog)
         end
       end
     end
