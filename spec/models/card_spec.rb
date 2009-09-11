@@ -29,4 +29,24 @@ describe Card do
       end
     end
   end
+  
+  describe "iteration_id=" do
+    context "with a non-zero id" do
+      it "assigns the iteration" do
+        Card.new(:iteration_id => 3).iteration_id.should == 3
+      end
+    end
+    
+    context "with 0" do
+      it "assigns nil" do
+        Card.new(:iteration_id => 0).iteration_id.should == nil
+      end
+    end
+
+    context "with '0'" do
+      it "assigns nil" do
+        Card.new(:iteration_id => '0').iteration_id.should == nil
+      end
+    end
+  end
 end

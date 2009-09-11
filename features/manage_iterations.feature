@@ -8,7 +8,6 @@ Feature: view iterations
     When I go to the iterations page
     Then I should see the "manage cards" card in the backlog
 
-@focus
   Scenario: One iteration with one card
     Given a "manage cards" card in the iteration starting "9/12/2009"
     When I go to the iterations page
@@ -40,3 +39,13 @@ Feature: view iterations
     And I move the "manage cards" card to the iteration starting "09/01/2009"
     Then I should see the "manage cards" card in the iteration starting "09/01/2009"
     And I should not see the "manage cards" card in the backlog
+
+@focus
+  Scenario: moving a card to the backlog
+    Given a "manage cards" card in the iteration starting "9/12/2009"
+    When I go to the iterations page
+    And I move the "manage cards" card to the backlog
+    Then I should see the "manage cards" card in the backlog
+    And I should not see the "manage cards" card in the iteration starting "09/12/2009"
+  
+  

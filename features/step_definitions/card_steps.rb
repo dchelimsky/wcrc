@@ -54,6 +54,14 @@ When /^I move the "([^\"]*)" card to the iteration starting "([^\"]*)"$/ do |car
   end
 end
 
+When /^I move the "([^\"]*)" card to the backlog$/ do |card_title|
+  card = Card.find_by_title(card_title)
+  within("#card_#{card.id}") do |scope|
+    scope.select "Backlog", :from => "card[iteration_id]"
+    scope.click_button "Move to:"
+  end
+end
+
 Then /^I should see detailed information for the "([^\"]*)" card$/ do |card_title|
   card = Card.find_by_title(card_title)
   response.should contain(card.title)
@@ -77,11 +85,7 @@ end
 
 Then /^I should see the "([^\"]*)" card in the backlog$/ do |card_title|
   card = Card.find_by_title(card_title)
-  within("#backlog") do |backlog|
-    within("#card_#{card.id}") do |card_div|
-      card_div.should contain(card.title)
-    end
-  end
+  response.should have_xpath("//div[@id = 'backlog']//div[@id = 'card_#{card.id}']")
 end
 
 Then /^I should not see the "([^\"]*)" card in the backlog$/ do |card_title|
@@ -94,3 +98,4 @@ Then /^I should not see any cards in the backlog$/ do
     scope.should_not have_xpath(".//div[starts-with(@id, 'card_')]")
   end
 end
+
