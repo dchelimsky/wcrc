@@ -28,6 +28,17 @@ Given /^a "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |title, star
                                           7)
 end
 
+Given /^a "([^\"]*)" card in the backlog$/ do |title|
+  create_card title
+end
+
+Given /^the "([^\"]*)" card has higher priority than the "([^\"]*)" card$/ do |first_title, second_title|
+  first_card = Card.find_by_title(first_title)
+  second_card = Card.find_by_title(second_title)
+  first_card.update_attributes!(:priority => 1) unless first_card.priority
+  second_card.update_attributes!(:priority => first_card.priority + 1)
+end
+
 When /^I add a card with$/ do |table|
   visit new_card_path
   card_data = table.hashes.first
@@ -46,6 +57,7 @@ When /^I add a "([^\"]*)" card$/ do |title|
 end
 
 When /^I move the "([^\"]*)" card to the iteration starting "([^\"]*)"$/ do |card_title, start_date|
+  visit iterations_path
   iteration = Iteration.find_by_start_date(start_date.as_date)
   card = Card.find_by_title(card_title)
   within("#card_#{card.id}") do |scope|
@@ -59,6 +71,14 @@ When /^I move the "([^\"]*)" card to the backlog$/ do |card_title|
   within("#card_#{card.id}") do |scope|
     scope.select "Backlog", :from => "card[iteration_id]"
     scope.click_button "Move to:"
+  end
+end
+
+When /^I increase the priority of the "([^\"]*)" card$/ do |title|
+  visit iterations_path
+  card = Card.find_by_title(title)
+  within("#card_#{card.id}") do |scope|
+    scope.click_button "Move up"
   end
 end
 
@@ -99,3 +119,24 @@ Then /^I should not see any cards in the backlog$/ do
   end
 end
 
+Then /^the "([^\"]*)" card should be lower priority than the "([^\"]*)" card$/ do |first_title, second_title|
+  lower_card = Card.find_by_title(first_title)
+  higher_card = Card.find_by_title(second_title)
+  within('#iterations') do |iterations|
+    within('.card_list') do |card_list|
+      card_list.should have_xpath(".//li[position()=1]/div[@id='card_#{higher_card.id}']")
+      card_list.should have_xpath(".//li[position()=2]/div[@id='card_#{lower_card.id}']")
+    end
+  end
+end
+
+Then /^the "([^\"]*)" card should be higher priority than the "([^\"]*)" card$/ do |first_title, second_title|
+  lower_card = Card.find_by_title(first_title)
+  higher_card = Card.find_by_title(second_title)
+  within('#iterations') do |iterations|
+    within('.card_list') do |card_list|
+      card_list.should have_xpath(".//li[position()=1]/div[@id='card_#{higher_card.id}']")
+      card_list.should have_xpath(".//li[position()=2]/div[@id='card_#{lower_card.id}']")
+    end
+  end
+end

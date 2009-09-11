@@ -1,5 +1,6 @@
 class Card < ActiveRecord::Base
   belongs_to :iteration
+  acts_as_list :column => 'priority', :scope => :iteration
   
   named_scope :backlog, :conditions => {:iteration_id => nil}
   

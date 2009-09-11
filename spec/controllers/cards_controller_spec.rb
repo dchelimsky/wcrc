@@ -47,5 +47,12 @@ describe CardsController do
       put :update, :id => "42", :card => {}
       response.should redirect_to('http://test.host/whatever')
     end
+    
+    context "with commit => Move up" do
+      it "moves calls move_up on the card" do
+        @card.should_receive(:move_higher)
+        put :update, :id => "37", :commit => "Move up"
+      end
+    end
   end
 end
