@@ -31,27 +31,41 @@ describe CardsController do
   describe "PUT 'update'" do
     before(:each) do
       request.env['HTTP_REFERER'] = '/whatever'
-      @card = stub_model(Card)
-      Card.stub(:find).and_return(@card)
-
-      @card.stub(:update_attributes!)
-    end
-    
-    it "updates the correct card" do
-      Card.should_receive(:find).with("37").and_return(@card)
-      @card.should_receive(:update_attributes!).with('these' => 'params')
-      put :update, :id => "37", :card => {'these' => 'params'}
+      @card = Card.create!
+      @iteration = Iteration.create!
     end
     
     it "redirects back to referrer" do
-      put :update, :id => "42", :card => {}
+      put :update, :id => @card.id, :card => {}
       response.should redirect_to('http://test.host/whatever')
+    end
+    
+    context "with commit => Move to" do
+      it "adds itself to the Iteration" do
+        put :update, :id => @card.id, :commit => "Move to:", :card => {:iteration_id => @iteration.id.to_s}
+        @iteration.cards.should include(@card)
+      end
     end
     
     context "with commit => Move up" do
       it "moves calls move_up on the card" do
-        @card.should_receive(:move_higher)
-        put :update, :id => "37", :commit => "Move up"
+        other = Card.create!
+        @iteration << other
+        @iteration << @card
+        put :update, :id => @card.id, :commit => "Move up"
+        @card.reload.priority.should == 1
+        other.reload.priority.should == 2
+      end
+    end
+    
+    context "with commit => Move up" do
+      it "moves calls move_up on the card" do
+        other = Card.create!
+        @iteration << other
+        @iteration << @card
+        put :update, :id => other.id, :commit => "Move down"
+        @card.reload.priority.should == 1
+        other.reload.priority.should == 2
       end
     end
   end

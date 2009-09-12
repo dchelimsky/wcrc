@@ -16,7 +16,6 @@ Feature: prioritize cards in an iteration
     When I increase the priority of the "second" card
     Then the "second" card should be higher priority than the "first" card
 
-@wip
   Scenario: move a card down in priority
     Given a "first" card in the iteration starting "09/12/2009"
     And a "second" card in the iteration starting "09/12/2009"

@@ -1,5 +1,14 @@
 class Iteration < ActiveRecord::Base
-  has_many :cards
+  has_many :cards, :order => 'priority' do
+    def <<(card)
+      card.remove_from_list
+      card.iteration = proxy_owner
+      card.insert_at proxy_owner.cards.count + 1
+      card.save!
+    end
+  end
   
-  named_scope :all_but, lambda { |iteration| {:conditions => ['id != ?', iteration.id]} }
+  def <<(card)
+    cards << card
+  end
 end

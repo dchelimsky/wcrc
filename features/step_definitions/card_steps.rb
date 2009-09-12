@@ -22,10 +22,11 @@ Given /^a card with$/ do |table|
 end
 
 Given /^a "([^\"]*)" card in the iteration starting "([^\"]*)"$/ do |title, start_date|
-  create_card title, 
-      Iteration.find_or_create_by_start_date_and_number_of_days(
-                                          start_date.as_date, 
-                                          7)
+  iteration = Iteration.find_or_create_by_start_date_and_number_of_days(
+                start_date.as_date, 
+                7
+              )
+  iteration << create_card(title)
 end
 
 Given /^a "([^\"]*)" card in the backlog$/ do |title|
@@ -82,6 +83,15 @@ When /^I increase the priority of the "([^\"]*)" card$/ do |title|
   end
 end
 
+When /^I decrease the priority of the "([^\"]*)" card$/ do |title|
+  visit iterations_path
+  card = Card.find_by_title(title)
+  within("#card_#{card.id}") do |scope|
+    scope.click_button "Move down"
+  end
+end
+
+
 Then /^I should see detailed information for the "([^\"]*)" card$/ do |card_title|
   card = Card.find_by_title(card_title)
   response.should contain(card.title)
@@ -119,9 +129,14 @@ Then /^I should not see any cards in the backlog$/ do
   end
 end
 
-Then /^the "([^\"]*)" card should be lower priority than the "([^\"]*)" card$/ do |first_title, second_title|
-  lower_card = Card.find_by_title(first_title)
-  higher_card = Card.find_by_title(second_title)
+Then /^the "([^\"]*)" card should be (higher|lower) priority than the "([^\"]*)" card$/ do |first_title, higher_or_lower, second_title|
+  if higher_or_lower == 'higher'
+    higher_card = Card.find_by_title(first_title)
+    lower_card = Card.find_by_title(second_title)
+  else
+    lower_card = Card.find_by_title(first_title)
+    higher_card = Card.find_by_title(second_title)
+  end
   within('#iterations') do |iterations|
     within('.card_list') do |card_list|
       card_list.should have_xpath(".//li[position()=1]/div[@id='card_#{higher_card.id}']")
@@ -130,13 +145,3 @@ Then /^the "([^\"]*)" card should be lower priority than the "([^\"]*)" card$/ d
   end
 end
 
-Then /^the "([^\"]*)" card should be higher priority than the "([^\"]*)" card$/ do |first_title, second_title|
-  lower_card = Card.find_by_title(first_title)
-  higher_card = Card.find_by_title(second_title)
-  within('#iterations') do |iterations|
-    within('.card_list') do |card_list|
-      card_list.should have_xpath(".//li[position()=1]/div[@id='card_#{higher_card.id}']")
-      card_list.should have_xpath(".//li[position()=2]/div[@id='card_#{lower_card.id}']")
-    end
-  end
-end

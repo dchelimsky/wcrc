@@ -6,6 +6,7 @@
         <span class='card_title'><%= link_to card.title, card_path(card) %></span>
         <%= submit_tag "Move to:" %> <%= select("card", "iteration_id", destination_options)%><br/>
         <%= submit_tag "Move up" %>
+        <%= submit_tag "Move down" %>
       <%- end -%>
       </div>
     </li>

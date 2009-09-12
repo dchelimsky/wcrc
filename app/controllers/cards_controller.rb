@@ -10,9 +10,12 @@ class CardsController < ApplicationController
   
   def update
     card = Card.find(params[:id])
-    if params[:commit] == "Move up"
+    case params[:commit]
+    when "Move up"
       card.move_higher
-    else
+    when "Move down"
+      card.move_lower
+    when /^Move to/
       card.update_attributes!(params[:card])
     end
     redirect_to :back
