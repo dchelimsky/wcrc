@@ -20,9 +20,6 @@ describe "/cards/index.html.erb" do
                           :points => 15)
       assigns[:cards] = [card]
       render
-      
-      response.should contain("1 Card")
-      
       response.should display_the(card)
     end
   end
@@ -40,8 +37,6 @@ describe "/cards/index.html.erb" do
                       ]
       assigns[:cards] = cards
       render
-      response.should contain("2 Cards")
-      
       cards.each do |card|
         response.should display_the(card)
       end
