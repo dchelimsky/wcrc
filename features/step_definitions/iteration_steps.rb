@@ -17,7 +17,7 @@ end
 Then /^I should see "([^\"]*)" starting on "([^\"]*)"$/ do
     |iteration_title, start_date|
   iteration = Iteration.find_by_start_date(start_date.as_date)
-  response.should have_selector("div#iteration_#{iteration.id}") do |div|
+  response.should have_selector("#iteration_#{iteration.id}") do |div|
     div.should contain(iteration_title)
     div.should contain(start_date)
   end
