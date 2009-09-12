@@ -1,0 +1,10 @@
+
+<ul>
+<%- @cards.each do |card| -%>
+  <li><div>
+  <%= card.title %><br />
+  <%= card.description %><br />
+  <%= card.points %>
+  </div></li>
+<%- end -%>
+</ul>
