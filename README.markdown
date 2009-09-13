@@ -4,7 +4,7 @@
 
     $ rake db:migrate
     $ rake db:test:prepare
-    $ rake cucumber
+    $ rake cucumber -p a
     $ rake spec
 
 You should see that we have:
